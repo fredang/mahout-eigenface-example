@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2010 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.chimpler.example.eigenface;
 
 import java.awt.image.BufferedImage;
@@ -22,6 +38,9 @@ import org.apache.mahout.math.Vector;
 import org.apache.mahout.math.VectorWritable;
 import org.apache.mahout.math.Vector.Element;
 
+/**
+ * @author chimpler.com 
+ */
 public class Helper {
 	public static void writeImage(String filename, double[] imagePixels,
 			int width, int height) throws Exception {
@@ -39,7 +58,6 @@ public class Helper {
 	}
 
 	public static double[] readImagePixels(String imageFileName, int width, int height) throws Exception {
-		System.out.println("Reading file " + imageFileName);
 		BufferedImage colorImage = ImageIO.read(new File(imageFileName));
 		
 		// convert to grayscale image
@@ -74,10 +92,9 @@ public class Helper {
 
 	public static double[] computeDifferencePixels(double[] pixels, double[] meanColumn) {
 		int pixelCount = pixels.length;
-		
 		double[] diffPixels = new double[pixelCount];
 		for(int i = 0 ; i < pixelCount ; i++) {
-			diffPixels[i] = (int)(pixels[i] - meanColumn[i]);
+			diffPixels[i] = pixels[i] - meanColumn[i];
 		}
 		
 		return diffPixels;
@@ -181,27 +198,27 @@ public class Helper {
 
 	public static double computeImageDistance(double[] pixelImage1, double[] pixelImage2) {
 		double distance = 0;
-		
-		for(int i = 0 ; i < pixelImage1.length ; i++) {
+		int pixelCount = pixelImage1.length;
+		for(int i = 0 ; i < pixelCount ; i++) {
 			double diff = pixelImage1[i] - pixelImage2[i];
 			distance += diff * diff;
 		}
-		return Math.sqrt(distance);
+		return Math.sqrt(distance / pixelCount);
 	}
 
 	public static List<String> listImageFileNames(String directoryName) {
 		File directory = new File(directoryName);
 		List<String> imageFileNames = new ArrayList<String>();
 		for(File imageFile: directory.listFiles()) {
-			if (imageFile.getName().endsWith(".gif")) {
+//			if (imageFile.getName().endsWith(".gif")) {
 				imageFileNames.add(imageFile.getAbsolutePath());
-			}
+//			}
 		}			
 		Collections.sort(imageFileNames);
 		return imageFileNames;
 	}
 	
-	public static String getFileName(String fullFileName) {
+	public static String getShortFileName(String fullFileName) {
 		return new File(fullFileName).getName();
 	}
 }

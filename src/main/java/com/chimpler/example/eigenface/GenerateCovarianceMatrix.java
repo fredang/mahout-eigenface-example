@@ -1,9 +1,28 @@
+/*
+ * Copyright (c) 2010 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.chimpler.example.eigenface;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author chimpler.com 
+ */
 public class GenerateCovarianceMatrix {
 	
 	private static double[][] convertImagesToMatrix(Collection<String> imageFileNames,
@@ -11,6 +30,7 @@ public class GenerateCovarianceMatrix {
 		int columnIndex = 0;
 		double[][] pixelMatrix = new double[width * height][imageFileNames.size()];
 		for(String fileName: imageFileNames) {
+			System.out.println("Reading file " + fileName);
 			double[] pixels = Helper.readImagePixels(fileName, width, height);
 			for(int i = 0 ; i < pixels.length ; i++) {
 				pixelMatrix[i][columnIndex] = pixels[i];
@@ -72,6 +92,7 @@ public class GenerateCovarianceMatrix {
 		
 		List<String> imageFileNames = Helper.listImageFileNames(imageDirectory);
 
+		System.out.println("Reading " + imageFileNames.size() + " images...");
 		double[][] pixelMatrix = convertImagesToMatrix(imageFileNames, width, height);
 		double[] meanColumn = computeMeanColumn(pixelMatrix);
 		Helper.writeImage(outputDirectory + "/mean-image.gif", meanColumn, width, height);

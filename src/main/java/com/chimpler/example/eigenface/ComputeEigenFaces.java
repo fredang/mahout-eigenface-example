@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2010 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.chimpler.example.eigenface;
 
 import java.awt.image.BufferedImage;
@@ -7,6 +23,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+/**
+ * @author chimpler.com 
+ */
 public class ComputeEigenFaces {	
 	private static void writeEigenFaceImage(String filename, double[][] eigenFacePixels,
 			int width, int height, int columnIndex) throws Exception {
@@ -97,13 +116,14 @@ public class ComputeEigenFaces {
 			double[] weights = Helper.computeWeights(diffImagePixels, eigenFaces);
 			double[] reconstructedImagePixels = Helper.reconstructImageWithEigenFaces(
 				weights, eigenFaces, meanPixels);
-			Helper.writeImage(outputDirectory + "/ef-" + Helper.getFileName(imageFileNames.get(i)), reconstructedImagePixels, width, height);
+			String shortFileName = Helper.getShortFileName(imageFileNames.get(i));
+			Helper.writeImage(outputDirectory + "/ef-" + shortFileName, reconstructedImagePixels, width, height);
 
 			double[] imagePixels = Helper.readImagePixels(imageFileNames.get(i), width, height);
 			double distance = Helper.computeImageDistance(imagePixels, reconstructedImagePixels);
 			minDistance = Math.min(minDistance, distance);
 			maxDistance = Math.max(maxDistance, distance);
-			System.out.printf("Distance for %1$s: %2$f\n", imageFileNames.get(i), distance);
+			System.out.printf("Reconstructed Image distance for %1$s: %2$f\n", shortFileName, distance);
 			
 			weightMatrix[i] = weights;
 		}
